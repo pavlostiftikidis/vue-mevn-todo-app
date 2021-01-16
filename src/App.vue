@@ -6,10 +6,10 @@
         <a class="navbar-brand float-left">MEVN Stack ToDo App</a>
         <ul class="nav navbar-nav flex-row float-right">
           <li class="nav-item">
-            <router-link class="nav-link pr-3" to="/">Create Student</router-link>
+            <router-link class="nav-link pr-3" to="/projects">Projects</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/view">View Students</router-link>
+            <router-link class="nav-link" to="/task">Tasks</router-link>
           </li>
         </ul>
       </div>
@@ -21,6 +21,8 @@
     </div>
   </div>
 </template>
+
+
 
 <style>
 #app {
