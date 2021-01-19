@@ -11,6 +11,9 @@
                     </div>
                     </h6>
                     <p class="card-text">{{item.description}}</p>
+                    <!-- <a :href="`#/projects/${item.id}`"  class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Primary link</a>
+                     -->
+                     <router-link :to="{ name: 'projectSingleComponent', params: {id: item.id}}">Read More</router-link>
                 </div>
             </div>
         </div>
@@ -29,6 +32,7 @@
                     </div>
                     </h6>
                     <p class="card-text">{{item.description}}</p>
+                    <a :href="`#/projects/${item.id}`"  class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Primary link</a>
                 </div>
             </div>
         </div>
@@ -53,17 +57,17 @@
 </svg>
   <span class="screen-reader-text"></span>
 </a>  
-
-
-
-
 </template>
 
 
 <script>
-    export default {       
+import projectSingleComponent from '@/components/projectSingleComponent.vue'
+
+    export default {  
+        name: 'projectListComponent',     
         data() {
             return {
+                components: {projectSingleComponent},
                 newProject:
                     {
                         title: '',
