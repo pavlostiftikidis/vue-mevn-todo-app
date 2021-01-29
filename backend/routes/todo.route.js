@@ -4,7 +4,7 @@ const todoRoute = express.Router();
 // Todo model
 let TodoModel = require('../models/Todo');
 
-todoRoute.route('/').get((req, res) => {
+todoRoute.route('/').get((req, res, next) => {
     TodoModel.find((error, data) => {
      if (error) {
        return next(error)
@@ -24,7 +24,7 @@ todoRoute.route('/').get((req, res) => {
   })
 });
 
-todoRoute.route('/edit-task/:id').get((req, res) => {
+todoRoute.route('/edit-task/:id').get((req, res, next) => {
    TodoModel.findById(req.params.id, (error, data) => {
     if (error) {
       return next(error)

@@ -1,42 +1,53 @@
 <template>
-    <h4><span class="badge bg-warning text-dark">Uncompleted</span></h4>
-    <div class="row justify-content-center">
-        <div class="col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item.id">
-            <div class="card" v-if="percentCompletedTask(index) != '100%'">
-                <div class="card-body">
-                    <h5 class="card-title">{{item.title}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" :style="{width:percentCompletedTask(index)}" aria-valuemin="0" aria-valuemax="100">{{percentCompletedTask(index)}}</div>
+<div class="row">
+    <div class="col-2">
+        <h4><span class="badge bg-info text-dark">Actions</span></h4>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-primary">Add Project</button>
+        </div>
+    </div>
+    <div class="col-10">
+        <h4><span class="badge bg-warning text-dark">Uncompleted</span></h4>
+        <div class="row justify-content-center">
+            <div class="col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item.id">
+                <div class="card" v-if="percentCompletedTask(index) != '100%'">
+                    <div class="card-body">
+                        <h5 class="card-title">{{item.title}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" :style="{width:percentCompletedTask(index)}" aria-valuemin="0" aria-valuemax="100">{{percentCompletedTask(index)}}</div>
+                        </div>
+                        </h6>
+                        <p class="card-text">{{item.description}}</p>
+                        <router-link :to="{ name: 'projectSingleComponent', props:{io: item.id},params: {id: item.id, project: JSON.stringify(item), progress: percentCompletedTask(index)} }">Read More</router-link>
                     </div>
-                    </h6>
-                    <p class="card-text">{{item.description}}</p>
-                    <!-- <a :href="`#/projects/${item.id}`"  class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Primary link</a>
-                     -->
-                     <router-link :to="{ name: 'projectSingleComponent', params: {id: item.id}}">Read More</router-link>
+                </div>
+            </div>
+        </div>
+        <h4><span class="badge bg-success">Completed</span></h4>
+    
+        <div class="row justify-content-center">    
+            <div class="col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item.id">
+                <div class="card" v-if="percentCompletedTask(index) == '100%'">
+                    <div class="card-body">
+                        <h5 class="card-title">{{item.title}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" :style="{width:percentCompletedTask(index)}" aria-valuemin="0" aria-valuemax="100">{{percentCompletedTask(index)}}</div>
+                        </div>
+                        </h6>
+                        <p class="card-text">{{item.description}}</p>
+                        <router-link :to="{ name: 'projectSingleComponent', params: {id: item.id}}">Read More</router-link>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
     
-    <h4><span class="badge bg-success">Completed</span></h4>
     
-    <div class="row justify-content-center">    
-        <div class="col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item.id">
-            <div class="card" v-if="percentCompletedTask(index) == '100%'">
-                <div class="card-body">
-                    <h5 class="card-title">{{item.title}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" :style="{width:percentCompletedTask(index)}" aria-valuemin="0" aria-valuemax="100">{{percentCompletedTask(index)}}</div>
-                    </div>
-                    </h6>
-                    <p class="card-text">{{item.description}}</p>
-                    <a :href="`#/projects/${item.id}`"  class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Primary link</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <form @submit="submitForm">
     <div>
@@ -50,21 +61,15 @@
     </div>
     <button>Submit</button>
   </form>
-
-    <a class="top-link hide" href="" id="js-top">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-</svg>
-  <span class="screen-reader-text"></span>
-</a>  
 </template>
 
 
 <script>
+import axios from "axios";
 import projectSingleComponent from '@/components/projectSingleComponent.vue'
 
     export default {  
-        name: 'projectListComponent',     
+        name: 'projectListComponent',    
         data() {
             return {
                 components: {projectSingleComponent},
@@ -75,46 +80,45 @@ import projectSingleComponent from '@/components/projectSingleComponent.vue'
                         status: false,
                         task:[]
                     },
-                projects:[
-                    {
-                        id: 1,
-                        title: 'ptyxiakh',
-                        description: 'TEI',
-                        status: false,
-                        task:[{title:'task1', completed: false}, {title:'task2', completed: true}]
-                    },
-                    {
-                        id: 2,
-                        title: 'vue app',
-                        description: 'My first vue js app',
-                        status: false,
-                        task:[{title:'task1', completed: false}]
-                    },
-                    {
-                        id: 3,
-                        title: 'Codeigniter',
-                        description: 'My first codeigniter app',
-                        status: false,
-                        task:[{title:'task1', completed: false}, {title:'task2', completed: true}]
-                    },
-                    {
-                        id: 4,
-                        title: 'Codeigniter_new',
-                        description: 'My first codeigniter app',
-                        status: false,
-                        task:[{title:'task1', completed: true}, {title:'task2', completed: true}]
-                    },
-                    {
-                        id: 5,
-                        title: 'nexctloud',
-                        description: 'My first codeigniter app',
-                        status: false,
-                        task:[{title:'task1', completed: true}, {title:'task2', completed: true}]
-                    },
+                    projects: [],
+                // projects:[
+                //     {
+                //         id: 1,
+                //         title: 'ptyxiakh',
+                //         description: 'TEI',
+                //         status: false,
+                //         task:[{title:'task1', completed: false}, {title:'task2', completed: true},{title:'task2', completed: true}]
+                //     },
+                //     {
+                //         id: 2,
+                //         title: 'vue app',
+                //         description: 'My first vue js app',
+                //         status: false,
+                //         task:[{title:'task1', completed: false}]
+                //     },
+                //     {
+                //         id: 3,
+                //         title: 'Codeigniter',
+                //         description: 'My first codeigniter app',
+                //         status: false,
+                //         task:[{title:'task1', completed: false}, {title:'task2', completed: true}]
+                //     },
+                //     {
+                //         id: 4,
+                //         title: 'Codeigniter_new',
+                //         description: 'My first codeigniter app',
+                //         status: false,
+                //         task:[{title:'task1', completed: true}, {title:'task2', completed: true}]
+                //     },
+                //     {
+                //         id: 5,
+                //         title: 'nexctloud',
+                //         description: 'My first codeigniter app',
+                //         status: false,
+                //         task:[{title:'task1', completed: true}, {title:'task2', completed: true},{title:'task2', completed: true}]
+                //     },
                     
-                ],
-                completedProject:[],
-                uncompletedProject:[]
+                // ],
             }
         },
         methods: {
@@ -132,7 +136,23 @@ import projectSingleComponent from '@/components/projectSingleComponent.vue'
             submitForm(event) {
                 event.preventDefault();                
                 this.projects.push(this.newProject)
+            },
+            percent() {
+                console.log('My injected function')
             }
+        },
+        provide() {
+            return {
+                name: 'Pavlos'
+            }
+        },
+        created(){
+            let apiURL = 'http://localhost:4000/api';
+                axios.get(apiURL).then(res => {
+                    this.projects = res.data;
+                }).catch(error => {
+                    console.log(error)
+                });
         }
     }
     
