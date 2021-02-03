@@ -1,22 +1,20 @@
-}<template>
-<button @click="showPopup = true">click open modal</button>
-<Popup v-if="showPopup" @close1="closePopup"/>
+<template>
+<button @click="showModal = true">Show modal</button>
+<Modal v-if="showModal" @close="closeModal"/>
     <div class="row">
         <div class="col-12 col-md-6 project">
             <h1><span class="badge badge-secondary">Project Details</span></h1>
             <div class="border">
-                <h2>Id: {{project.id}}</h2>
+                <h2>Id: {{project.id ? project.id :  project._id}}</h2>
                 <h2>title: {{project.title}}</h2>
                 <h2>description: {{project.description}}</h2>
                 <h2>status: {{project.status}}</h2>
-                <h2>progress: {{project.progress}}</h2>
-                <hr>
-                <h2>Name:{{name}}</h2>
+                <!-- <h2>progress: {{project.progress}}</h2> -->
            </div>
-           <h1><span class="badge badge-secondary todoProgress">Progress</span></h1>
+           <!-- <h1><span class="badge badge-secondary todoProgress">Progress</span></h1>
            <div class="progress">
                 <div class="progress-bar" role="progressbar" :style="{width:project.progress}" aria-valuemin="0" aria-valuemax="100">{{project.progress}}</div>
-            </div>
+            </div> -->
            
             
         </div>
@@ -24,7 +22,8 @@
             <h1><span class="badge badge-secondary">Todo list</span></h1>
             <ul id="example-1">
                 <li v-for="item in project.task" :key="item.id">
-                    <h2>{{ item.title }} - {{ item.completed }}</h2>
+                    <!-- <h2 @click="toggleDone(item)" :id="item.id" :class="{ done: item.completed }">{{ item.title }} - {{ item.completed }}</h2> -->
+                    <Todo-item :task="item" @update="toggleDone(item)"/>
                 </li>
             </ul>
         </div>
@@ -34,16 +33,17 @@
 
 <script>
 import axios from "axios";
-import Popup from './Popup.vue';
+import Modal from './Modal.vue';
+import TodoItem from './Todo-item.vue';
+
     export default {
-  components: { Popup },
-        name: 'projectSingleComponent',
-        inject: ['name'],   
+  components: { Modal, TodoItem },
+  name: 'projectSingleComponent',  
         data() {
             return {
-                showPopup: false,
+                showModal: false,
                 project: {
-                    id: 0,
+                    id: '',
                     title: '',
                     description: '',
                     status: false,
@@ -56,13 +56,29 @@ import Popup from './Popup.vue';
 
         },
         methods: {
-            closePopup(){
-                this.showPopup = false
+            closeModal(data) {
+                this.showModal = false
+                console.log(data)
+            },
+            toggleDone(task) {
+                if(this.project.id == null){
+                    //if fetch from api parse id, this.project._id
+                    this.project.id = this.project._id
+                }    
+                //afou kserw to id tou task, kserw kai thn thesi tou (task.id - 1) = index           
+                this.project.task[task.id - 1].completed = !this.project.task[task.id - 1].completed
 
-            }
+                let apiURL = 'http://localhost:4000/api/update-task/' + this.$route.params.id;
+                axios.post(apiURL, this.project).then((res) => {
+                console.log(res)
+            }).catch(error => {
+                console.log(error)
+            });
+
+                
+            }           
         },
         created() {
-            console.log(`Injected property: ${this.name}`)
             let projectData = this.$route.params;
             if(projectData.project){
                 this.project.id = projectData.id
@@ -72,11 +88,12 @@ import Popup from './Popup.vue';
                 this.project.task = JSON.parse(projectData.project).task
                 this.project.progress = projectData.progress
             }else{
-                console.log('kanena data')
-                let apiURL = 'http://localhost:4000/api/edit-task/600c4a01804d281158c11f71';
+                console.log('Fetch data from API')
+                
+                let apiURL = 'http://localhost:4000/api/edit-task/' + this.$route.params.id;
+                console.log(apiURL)
                 axios.get(apiURL).then(res => {
                     this.project = res.data;
-                    console.log(this.project)
                 }).catch(error => {
                     console.log(error)
                 });
@@ -94,6 +111,10 @@ import Popup from './Popup.vue';
 
 .todoProgress {
     margin-top: 50px;
+}
+
+.done {
+    text-decoration: line-through;
 }
 
 </style>

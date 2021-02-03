@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let todoSchema = new Schema({
   id: {
-    type: Number
+    type: Object
   },
   title: {
     type: String
@@ -14,6 +14,9 @@ let todoSchema = new Schema({
   status: {
     type: Boolean
   },
+  task: {
+    type: Array
+  }
 }, {
   collection: 'todo'
 })

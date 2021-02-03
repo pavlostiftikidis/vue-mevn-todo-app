@@ -9,7 +9,7 @@
     <div class="col-10">
         <h4><span class="badge bg-warning text-dark">Uncompleted</span></h4>
         <div class="row justify-content-center">
-            <div class="col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item.id">
+            <div class="col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item._id">
                 <div class="card" v-if="percentCompletedTask(index) != '100%'">
                     <div class="card-body">
                         <h5 class="card-title">{{item.title}}</h5>
@@ -19,7 +19,7 @@
                         </div>
                         </h6>
                         <p class="card-text">{{item.description}}</p>
-                        <router-link :to="{ name: 'projectSingleComponent', props:{io: item.id},params: {id: item.id, project: JSON.stringify(item), progress: percentCompletedTask(index)} }">Read More</router-link>
+                        <router-link :to="{ name: 'projectSingleComponent', props:{io: item._id},params: {id: item._id, project: JSON.stringify(item), progress: percentCompletedTask(index)} }">Read More</router-link>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
         <h4><span class="badge bg-success">Completed</span></h4>
     
         <div class="row justify-content-center">    
-            <div class="col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item.id">
+            <div class="col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item._id">
                 <div class="card" v-if="percentCompletedTask(index) == '100%'">
                     <div class="card-body">
                         <h5 class="card-title">{{item.title}}</h5>
@@ -37,30 +37,13 @@
                         </div>
                         </h6>
                         <p class="card-text">{{item.description}}</p>
-                        <router-link :to="{ name: 'projectSingleComponent', params: {id: item.id}}">Read More</router-link>
+                        <router-link :to="{ name: 'projectSingleComponent', params: {id: item._id}}">Read More</router-link>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-    
-    
-    
-
-    <form @submit="submitForm">
-    <div>
-      <label for="name">Title:</label>
-      <input type="text" id="name" v-model="newProject.title">
-    </div>
-
-    <div>
-      <label for="profile">Description</label>
-      <textarea name="profile" id="profile" cols="30" rows="5" v-model="newProject.description"></textarea>
-    </div>
-    <button>Submit</button>
-  </form>
 </template>
 
 

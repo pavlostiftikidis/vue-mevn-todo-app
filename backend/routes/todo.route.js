@@ -30,6 +30,7 @@ todoRoute.route('/edit-task/:id').get((req, res, next) => {
       return next(error)
     } else {
       res.json(data)
+      console.log(data)
     }
   })
 })
