@@ -106,15 +106,15 @@ import projectSingleComponent from '@/components/projectSingleComponent.vue'
         },
         methods: {
             percentCompletedTask(index) {
-                var tasks
+                let tasks
                 if(this.projects[index].task.length != 0){
                     tasks = this.projects[index].task.length
                 }else{
                      return 0+'%'
                 }
                 
-                var completedTask = this.projects[index].task.filter(item => item.completed === true).length
-                   return (completedTask / tasks) * 100 + '%'
+                let completedTask = this.projects[index].task.filter(item => item.completed === true).length
+                   return parseInt((completedTask / tasks) * 100, 10) + '%'
             },
             submitForm(event) {
                 event.preventDefault();                

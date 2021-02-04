@@ -2,6 +2,14 @@
 <button @click="showModal = true">Show modal</button>
 <Modal v-if="showModal" @close="closeModal"/>
     <div class="row">
+        <div class="col-12">
+            <h1><span class="badge badge-secondary todoProgress">Progress1</span></h1>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" :style="{width:progressPercent() + '%'}" aria-valuemin="0" aria-valuemax="100">{{progressPercent()}} %</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-12 col-md-6 project">
             <h1><span class="badge badge-secondary">Project Details</span></h1>
             <div class="border">
@@ -9,12 +17,9 @@
                 <h2>title: {{project.title}}</h2>
                 <h2>description: {{project.description}}</h2>
                 <h2>status: {{project.status}}</h2>
-                <!-- <h2>progress: {{project.progress}}</h2> -->
+
            </div>
-           <!-- <h1><span class="badge badge-secondary todoProgress">Progress</span></h1>
-           <div class="progress">
-                <div class="progress-bar" role="progressbar" :style="{width:project.progress}" aria-valuemin="0" aria-valuemax="100">{{project.progress}}</div>
-            </div> -->
+           
            
             
         </div>
@@ -50,15 +55,58 @@ import TodoItem from './Todo-item.vue';
                     task: [],
                     progress: ''
                 },
-                projectData:''
+                projectData:'',
+                currentProgress: 0
                 
             }
 
+        },
+        watch: {
+            currentProgress(val){
+                if(val == 100){
+                    console.log("i am a watcher, project completed " + val)
+                    if(this.project.status == true){
+                        this.project.status = !this.project.status
+                        let apiURL = 'http://localhost:4000/api/update-task/' + this.$route.params.id;
+                            axios.post(apiURL, this.project).then((res) => {
+                            console.log(res)
+                            console.log('update status')
+                        }).catch(error => {
+                            console.log(error)
+                        });
+                    }
+                }else if(isNaN(val)){
+                    return
+                }else{ 
+                    if(this.project.status == false){   
+                        this.project.status = !this.project.status
+                        let apiURL = 'http://localhost:4000/api/update-task/' + this.$route.params.id;
+                            axios.post(apiURL, this.project).then((res) => {
+                            console.log(res)
+                            console.log('update status from completed to uncompleted')
+                        }).catch(error => {
+                            console.log(error)
+                        });
+                    }               
+                    console.log("i am a watcher, project not completed " + val)
+                }
+                
+            }
+        },
+        computed: {
+            
         },
         methods: {
             closeModal(data) {
                 this.showModal = false
                 console.log(data)
+            },
+            progressPercent() {
+                let taskCount = this.project.task.length
+                let completedTask = this.project.task.filter(item => item.completed === true).length
+                let percent = (completedTask / taskCount) * 100
+                this.currentProgress = percent
+                return parseInt(percent, 10) 
             },
             toggleDone(task) {
                 if(this.project.id == null){
@@ -67,6 +115,7 @@ import TodoItem from './Todo-item.vue';
                 }    
                 //afou kserw to id tou task, kserw kai thn thesi tou (task.id - 1) = index           
                 this.project.task[task.id - 1].completed = !this.project.task[task.id - 1].completed
+                this.currentProgress = this.progressPercent()
 
                 let apiURL = 'http://localhost:4000/api/update-task/' + this.$route.params.id;
                 axios.post(apiURL, this.project).then((res) => {
@@ -87,6 +136,7 @@ import TodoItem from './Todo-item.vue';
                 this.project.status = JSON.parse(projectData.project).status
                 this.project.task = JSON.parse(projectData.project).task
                 this.project.progress = projectData.progress
+                
             }else{
                 console.log('Fetch data from API')
                 

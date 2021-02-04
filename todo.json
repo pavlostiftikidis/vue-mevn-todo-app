@@ -4,7 +4,7 @@
   },
   "title": "ptyxiakh",
   "description": "TEI",
-  "status": false,
+  "status": true,
   "task": [
     {
       "title": "task1",
@@ -28,7 +28,7 @@
   },
   "title": "vue app",
   "description": "My first vue js app",
-  "status": false,
+  "status": true,
   "task": [
     {
       "title": "task1",
@@ -42,7 +42,7 @@
   },
   "title": "Codeigniter",
   "description": "My first codeigniter app",
-  "status": false,
+  "status": true,
   "task": [
     {
       "title": "task1",
