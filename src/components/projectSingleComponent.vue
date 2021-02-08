@@ -17,14 +17,22 @@
                 <h2>title: {{project.title}}</h2>
                 <h2>description: {{project.description}}</h2>
                 <h2>status: {{project.status}}</h2>
-
-           </div>
-           
-           
-            
+            </div>           
         </div>
+
         <div class="col-12 col-md-6 todo">
             <h1><span class="badge badge-secondary">Todo list</span></h1>
+            <form>
+                <div class="title">
+                    <input @keyup.enter="submitForm" type="text" v-model.trim="formValues.title" placeholder="enter a new task">
+                    <p>{{formValues.title}}</p>
+                </div>
+                <!-- <div>
+                    <button>Submit</button>
+                </div> -->
+            </form>
+            
+            
             <ul id="example-1">
                 <li v-for="item in project.task" :key="item.id">
                     <!-- <h2 @click="toggleDone(item)" :id="item.id" :class="{ done: item.completed }">{{ item.title }} - {{ item.completed }}</h2> -->
@@ -32,6 +40,8 @@
                 </li>
             </ul>
         </div>
+
+
     </div>
     
 </template>
@@ -56,7 +66,12 @@ import TodoItem from './Todo-item.vue';
                     progress: ''
                 },
                 projectData:'',
-                currentProgress: 0
+                currentProgress: 0,
+                formValues: {
+                    id: 0,
+                    title: null,
+                    completed: false
+                }
                 
             }
 
@@ -100,6 +115,23 @@ import TodoItem from './Todo-item.vue';
             closeModal(data) {
                 this.showModal = false
                 console.log(data)
+            },
+            submitForm(event) {
+                event.preventDefault()
+                console.log(this.formValues)
+                //parse last array item id and increment for newTaskId
+                let newTaskId = parseInt(this.project.task[this.project.task.length - 1].id) + 1
+                this.formValues.id = newTaskId
+                this.project.task.push(this.formValues)
+                console.log(JSON.stringify(this.project))
+
+                let apiURL = 'http://localhost:4000/api/update-task/' + this.$route.params.id;
+                axios.post(apiURL, this.project).then((res) => {
+                    console.log(res)
+                    }).catch(error => {
+                        console.log(error)
+                    }); 
+
             },
             progressPercent() {
                 let taskCount = this.project.task.length
@@ -166,5 +198,43 @@ import TodoItem from './Todo-item.vue';
 .done {
     text-decoration: line-through;
 }
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    margin-bottom: 5%;
+    width: 100%;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+    border-bottom: 2px solid;
+    
+}
+
+input:hover{
+    background-color: #eee;
+}
+
+form {
+    padding: 0 90px;
+}
+
+.title{
+    width: 100%;
+}
+
+form > div {
+    float: left;
+}
+
+ul {
+    clear: both;
+}
+
 
 </style>

@@ -64,44 +64,6 @@ import projectSingleComponent from '@/components/projectSingleComponent.vue'
                         task:[]
                     },
                     projects: [],
-                // projects:[
-                //     {
-                //         id: 1,
-                //         title: 'ptyxiakh',
-                //         description: 'TEI',
-                //         status: false,
-                //         task:[{title:'task1', completed: false}, {title:'task2', completed: true},{title:'task2', completed: true}]
-                //     },
-                //     {
-                //         id: 2,
-                //         title: 'vue app',
-                //         description: 'My first vue js app',
-                //         status: false,
-                //         task:[{title:'task1', completed: false}]
-                //     },
-                //     {
-                //         id: 3,
-                //         title: 'Codeigniter',
-                //         description: 'My first codeigniter app',
-                //         status: false,
-                //         task:[{title:'task1', completed: false}, {title:'task2', completed: true}]
-                //     },
-                //     {
-                //         id: 4,
-                //         title: 'Codeigniter_new',
-                //         description: 'My first codeigniter app',
-                //         status: false,
-                //         task:[{title:'task1', completed: true}, {title:'task2', completed: true}]
-                //     },
-                //     {
-                //         id: 5,
-                //         title: 'nexctloud',
-                //         description: 'My first codeigniter app',
-                //         status: false,
-                //         task:[{title:'task1', completed: true}, {title:'task2', completed: true},{title:'task2', completed: true}]
-                //     },
-                    
-                // ],
             }
         },
         methods: {
