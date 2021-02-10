@@ -1,6 +1,4 @@
 <template>
-<button @click="showModal = true">Show modal</button>
-<Modal v-if="showModal" @close="closeModal"/>
     <div class="row">
         <div class="col-12">
             <h1><span class="badge badge-secondary todoProgress">Progress1</span></h1>
@@ -27,6 +25,9 @@
                     <input @keyup.enter="submitForm" type="text" v-model.trim="formValues.title" placeholder="enter a new task">
                     <p>{{formValues.title}}</p>
                 </div>
+
+                <!-- Custom Input Component-->
+                <Input v-model="formValues.title"/>
                 <!-- <div>
                     <button>Submit</button>
                 </div> -->
@@ -48,15 +49,14 @@
 
 <script>
 import axios from "axios";
-import Modal from './Modal.vue';
 import TodoItem from './Todo-item.vue';
+import Input from './Input.vue';
 
     export default {
-  components: { Modal, TodoItem },
+  components: { TodoItem, Input },
   name: 'projectSingleComponent',  
         data() {
             return {
-                showModal: false,
                 project: {
                     id: '',
                     title: '',
@@ -212,8 +212,7 @@ input {
     border-right-style: hidden;
     border-left-style: hidden;
     border-bottom-style: groove;
-    border-bottom: 2px solid;
-    
+    border-bottom: 2px solid;    
 }
 
 input:hover{
