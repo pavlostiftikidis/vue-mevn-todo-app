@@ -1,6 +1,6 @@
 <template>
 <div class="row">
-    <div class="col-12 col-sm-6 col-md-3">
+    <div class="col-12 col-sm-4 col-md-3">
         <h4><span class="badge bg-info text-dark">Actions</span></h4>
         <div class="row justify-content-center">
             <button type="button" @click="showProjectForm = !showProjectForm" class="btn btn-primary">Add Project</button>
@@ -9,10 +9,10 @@
             <Project-form v-if="showProjectForm" :projects="this.projects" :editFormData="this.editFormData" @close="showProjectForm = false"/>
         </div>
     </div>
-    <div class="col-12 col-sm-6 col-md-9">
+    <div class="col-12 col-sm-8 col-md-9">
         <h4><span class="badge bg-warning text-dark">Uncompleted</span></h4>
         <div class="row justify-content-center">
-            <div class="col-12 col-sm-6 col-md-10" v-for="(item, index) in projects" :key="item._id">
+            <div class="col-12 col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item._id">
                 <div class="card" v-if="percentCompletedTask(index) != '100%'">
                     <div class="card-body">
                         <h5 class="card-title">{{item.title}}</h5>
@@ -36,7 +36,7 @@
         <h4><span class="badge bg-success">Completed</span></h4>
     
         <div class="row justify-content-center">    
-            <div class="col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item._id">
+            <div class="col-12 col-sm-6 col-md-4" v-for="(item, index) in projects" :key="item._id">
                 <div class="card" v-if="percentCompletedTask(index) == '100%'">
                     <div class="card-body">
                         <h5 class="card-title">{{item.title}}</h5>
@@ -71,10 +71,11 @@ import ProjectForm from '@/components/Project-form.vue'
                     showProjectForm: false,
                     editFormData:
                     {
-                        _id: null,
+                        id: null,
                         title: null,
                         description: null,
-                        task: []
+                        task: [],
+                        status: true
                     },
             }
         },
