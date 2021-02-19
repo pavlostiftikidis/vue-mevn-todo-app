@@ -20,17 +20,15 @@
 
         <div class="col-12 col-md-6 todo">
             <h1><span class="badge badge-secondary">Todo list</span></h1>
-            <form>
+            <form @submit.prevent="submitForm">
                 <div class="title">
-                    <input @keyup.enter="submitForm" type="text" v-model.trim="formValues.title" placeholder="enter a new task">
+                    <input type="text" v-model.trim="formValues.title" placeholder="enter a new task">
                     <p>{{formValues.title}}</p>
                 </div>
 
-                <!-- Custom Input Component-->
-                <Input v-model="formValues.title"/>
-                <!-- <div>
+                <div>
                     <button>Submit</button>
-                </div> -->
+                </div>
             </form>
             
             
@@ -50,10 +48,9 @@
 <script>
 import axios from "axios";
 import TodoItem from './Todo-item.vue';
-import Input from './Input.vue';
 
     export default {
-  components: { TodoItem, Input },
+  components: { TodoItem },
   name: 'projectSingleComponent',  
         data() {
             return {
@@ -117,13 +114,25 @@ import Input from './Input.vue';
                 console.log(data)
             },
             submitForm(event) {
+                console.log('my proj' + JSON.stringify(this.project))
                 event.preventDefault()
-                console.log(this.formValues)
+                let newTaskId
+                console.log('my proj' + JSON.stringify(this.project.task))
+                
                 //parse last array item id and increment for newTaskId
-                let newTaskId = parseInt(this.project.task[this.project.task.length - 1].id) + 1
+                if(this.project.task.length == 0){
+                    console.log('first task')
+                   newTaskId = 1
+                }else{
+                    newTaskId = parseInt(this.project.task[this.project.task.length - 1].id) + 1
+                    console.log('not first task')
+                }
+                
                 this.formValues.id = newTaskId
+                console.log('new item task is'+JSON.stringify(this.formValues))
+
+                console.log('pre push'+JSON.stringify(this.formValues))
                 this.project.task.push(this.formValues)
-                console.log(JSON.stringify(this.project))
 
                 let apiURL = 'http://localhost:4000/api/update-task/' + this.$route.params.id;
                 axios.post(apiURL, this.project).then((res) => {
@@ -135,10 +144,17 @@ import Input from './Input.vue';
             },
             progressPercent() {
                 let taskCount = this.project.task.length
-                let completedTask = this.project.task.filter(item => item.completed === true).length
-                let percent = (completedTask / taskCount) * 100
-                this.currentProgress = percent
-                return parseInt(percent, 10) 
+                if(taskCount == 0){
+                    return parseInt(0, 10)
+                }else{
+                    console.log(taskCount)
+                    let completedTask = this.project.task.filter(item => item.completed === true).length
+                    let percent = (completedTask / taskCount) * 100
+                    this.currentProgress = percent
+                    console.log(this.currentProgress)
+                    return parseInt(percent, 10) 
+                }
+                
             },
             toggleDone(task) {
                 if(this.project.id == null){

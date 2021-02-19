@@ -28,7 +28,7 @@ import axios from "axios";
       return {
         showSuccessAlert: false,
         formValues: {
-            id: Object,
+            id: null,
             title: null,
             description: null,
             task: [],
@@ -40,10 +40,11 @@ import axios from "axios";
     },
     methods: {
       submitForm() {
-        //console.log(this.formValues)
-        if(this.formValues.id != null){
+        
+        if(this.formValues._id != null){
           console.log('from update')
-          let apiURL = `http://localhost:4000/api/update-task/${this.formValues.id}`;
+          console.log(JSON.stringify(this.formValues))
+          let apiURL = `http://localhost:4000/api/update-task/${this.formValues._id}`;
 
             axios.post(apiURL, this.formValues).then((res) => {
                 console.log(res)
@@ -59,7 +60,9 @@ import axios from "axios";
                   // parse id for new project
                   let projectId = res.data._id
                   console.log(projectId)
+                  this.formValues.id = projectId
                   this.formValues._id = projectId
+                  console.log(JSON.stringify(this.formValues))
                   this.allProjects.push(this.formValues)
                   this.$router.push('/projects')
                 }).catch(error => {
