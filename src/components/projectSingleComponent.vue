@@ -35,7 +35,8 @@
             <ul id="example-1">
                 <li v-for="item in project.task" :key="item.id">
                     <!-- <h2 @click="toggleDone(item)" :id="item.id" :class="{ done: item.completed }">{{ item.title }} - {{ item.completed }}</h2> -->
-                    <Todo-item :task="item" @update="toggleDone(item)"/>
+                    <Todo-item :task="item" @deleteItem="deleteTask" @update="toggleDone(item)"/>
+                    
                 </li>
             </ul>
         </div>
@@ -109,6 +110,9 @@ import TodoItem from './Todo-item.vue';
             
         },
         methods: {
+            deleteTask(data) {
+                console.log("project ID:" + this.project._id+ " task ID:" + data)
+            },
             closeModal(data) {
                 this.showModal = false
                 console.log(data)

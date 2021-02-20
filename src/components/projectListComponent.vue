@@ -80,7 +80,7 @@ import ProjectForm from '@/components/Project-form.vue'
             }
         },
         methods: {
-            deleteProject(id){
+            deleteProject(id) {
                console.log(id)
                let apiURL = `http://localhost:4000/api/delete-task/${id}`;
                 let indexOfArrayItem = this.projects.findIndex(i => i._id === id);

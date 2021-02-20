@@ -39,8 +39,7 @@ import axios from "axios";
       }
     },
     methods: {
-      submitForm() {
-        
+      submitForm() {  
         if(this.formValues._id != null){
           console.log('from update')
           console.log(JSON.stringify(this.formValues))
