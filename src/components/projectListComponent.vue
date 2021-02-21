@@ -53,6 +53,9 @@
         </div>
     </div>
 </div>
+
+
+
 </template>
 
 
@@ -88,6 +91,7 @@ import ProjectForm from '@/components/Project-form.vue'
                 if (window.confirm("Do you really want to delete?")) {
                     axios.delete(apiURL).then(() => {
                         this.projects.splice(indexOfArrayItem, 1);
+                        document.getElementById('deleteAlert').classList.add("show")
                     }).catch(error => {
                         console.log(error)
                     });
@@ -158,5 +162,10 @@ import ProjectForm from '@/components/Project-form.vue'
  width: 80px;
  height: 80px;
  background-color: #F8F8F8;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: flex-end;
 }
 </style>

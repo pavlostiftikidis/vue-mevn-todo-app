@@ -43,15 +43,18 @@
 
 
     </div>
+
+    <alerts />
     
 </template>
 
 <script>
 import axios from "axios";
 import TodoItem from './Todo-item.vue';
+import alerts from './Alerts.vue';
 
     export default {
-  components: { TodoItem },
+  components: { TodoItem, alerts },
   name: 'projectSingleComponent',  
         data() {
             return {
@@ -84,6 +87,8 @@ import TodoItem from './Todo-item.vue';
                             axios.post(apiURL, this.project).then((res) => {
                             console.log(res)
                             console.log('update status')
+                            document.getElementById('updateAlert').classList.add("show")
+                            setTimeout(function() { document.getElementById('updateAlert').classList.remove("show") }, 3000);
                         }).catch(error => {
                             console.log(error)
                         });
@@ -97,6 +102,8 @@ import TodoItem from './Todo-item.vue';
                             axios.post(apiURL, this.project).then((res) => {
                             console.log(res)
                             console.log('update status from completed to uncompleted')
+                            document.getElementById('updateAlert').classList.add("show")
+                            setTimeout(function() { document.getElementById('updateAlert').classList.remove("show") }, 3000);
                         }).catch(error => {
                             console.log(error)
                         });
@@ -141,6 +148,8 @@ import TodoItem from './Todo-item.vue';
                 let apiURL = 'http://localhost:4000/api/update-task/' + this.$route.params.id;
                 axios.post(apiURL, this.project).then((res) => {
                     console.log(res)
+                    document.getElementById('addAlert').classList.add("show")
+                            setTimeout(function() { document.getElementById('addAlert').classList.remove("show") }, 3000);
                     }).catch(error => {
                         console.log(error)
                     }); 
