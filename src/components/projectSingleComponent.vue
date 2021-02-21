@@ -118,31 +118,39 @@ import alerts from './Alerts.vue';
         },
         methods: {
             deleteTask(data) {
-                console.log("project ID:" + this.project._id+ " task ID:" + data)
+                let taskId = data
+                let projectId = this.$route.params.id
+                
+                // task list after remove task
+                var taskList = this.project.task.filter(x => {
+                    return x.id != taskId
+                })
+                this.project.task = taskList
+                let apiURL = 'http://localhost:4000/api/update-task/' + projectId;
+                axios.post(apiURL, this.project).then((res) => {
+                    console.log(res)
+                    document.getElementById('deleteAlert').classList.add("show")
+                            setTimeout(function() { document.getElementById('deleteAlert').classList.remove("show") }, 3000);
+                    }).catch(error => {
+                        console.log(error)
+                    }); 
             },
             closeModal(data) {
                 this.showModal = false
                 console.log(data)
             },
             submitForm(event) {
-                console.log('my proj' + JSON.stringify(this.project))
                 event.preventDefault()
                 let newTaskId
-                console.log('my proj' + JSON.stringify(this.project.task))
                 
                 //parse last array item id and increment for newTaskId
                 if(this.project.task.length == 0){
-                    console.log('first task')
                    newTaskId = 1
                 }else{
                     newTaskId = parseInt(this.project.task[this.project.task.length - 1].id) + 1
-                    console.log('not first task')
                 }
                 
                 this.formValues.id = newTaskId
-                console.log('new item task is'+JSON.stringify(this.formValues))
-
-                console.log('pre push'+JSON.stringify(this.formValues))
                 this.project.task.push(this.formValues)
 
                 let apiURL = 'http://localhost:4000/api/update-task/' + this.$route.params.id;

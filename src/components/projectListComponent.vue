@@ -92,6 +92,7 @@ import ProjectForm from '@/components/Project-form.vue'
                     axios.delete(apiURL).then(() => {
                         this.projects.splice(indexOfArrayItem, 1);
                         document.getElementById('deleteAlert').classList.add("show")
+                        setTimeout(function() { document.getElementById('deleteAlert').classList.remove("show") }, 3000);
                     }).catch(error => {
                         console.log(error)
                     });
