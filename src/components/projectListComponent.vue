@@ -51,6 +51,9 @@
                 </div>
             </div>
         </div>
+        <teleport to="#notification">
+            <Alerts />
+        </teleport>
     </div>
 </div>
 
@@ -63,10 +66,11 @@
 import axios from "axios";
 import projectSingleComponent from '@/components/projectSingleComponent.vue'
 import ProjectForm from '@/components/Project-form.vue'
+import Alerts from '@/components/Alerts.vue'
 
     export default {  
         name: 'projectListComponent', 
-        components:{ProjectForm},   
+        components:{ProjectForm, Alerts},   
         data() {
             return {
                 components: {projectSingleComponent},
@@ -165,8 +169,4 @@ import ProjectForm from '@/components/Project-form.vue'
  background-color: #F8F8F8;
 }
 
-.flex-container {
-    display: flex;
-    justify-content: flex-end;
-}
 </style>

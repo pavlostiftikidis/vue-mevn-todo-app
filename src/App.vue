@@ -1,25 +1,30 @@
 <template>
-
-    <!-- Nav bar -->
-    <nav class="navbar navbar-custom navbar-dark justify-content-between flex-nowrap flex-row">
-      <div class="container">
-        <a class="navbar-brand float-left">MEVN Stack ToDo App</a>
-        <ul class="nav navbar-nav flex-row float-right">
-          <li class="nav-item">
-            <router-link class="nav-link pr-3" to="/login">Sign in</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link pr-3" to="/projects">Projects</router-link>
-          </li>
-          
-        </ul>
-      </div>
-    </nav>
-
-    <!-- Router view -->
-    <div class="container mt-5">
-      <router-view></router-view>
+  <!-- Nav bar -->
+  <nav
+    class="navbar navbar-custom navbar-dark justify-content-between flex-nowrap flex-row"
+  >
+    <div class="container">
+      <a class="navbar-brand float-left">MEVN Stack ToDo App</a>
+      <ul class="nav navbar-nav flex-row float-right">
+        <li class="nav-item">
+          <router-link class="nav-link pr-3" to="/login">Sign in</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link pr-3" to="/signup">Sign up</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link pr-3" to="/projects"
+            >Projects</router-link
+          >
+        </li>
+      </ul>
     </div>
+  </nav>
+
+  <!-- Router view -->
+  <div class="container mt-5">
+    <router-view></router-view>
+  </div>
 </template>
 
 
@@ -42,15 +47,12 @@
   color: #2c3e50;
 }
 
-
-/* Modify the backgorund color */ 
-.navbar-custom { 
-    background-color: #42b983; 
-} 
-
+/* Modify the backgorund color */
+.navbar-custom {
+  background-color: #42b983;
+}
 
 #nav a.router-link-exact-active {
   color: #ffeedb;
 }
-
 </style>

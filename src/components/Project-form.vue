@@ -1,10 +1,10 @@
 <template>
-<div>
+<form @submit.prevent="submitForm">
   <Input v-model="formValues.title" info="Title"/>
   <Input v-model="formValues.description" info="Description"/>
-  <button @click.prevent="submitForm" class="btn btn-success">Submit</button>
+  <button type="submit" class="btn btn-success">Submit</button>
   
-</div>
+</form>
 </template>
 
 <script>
@@ -34,7 +34,7 @@ import axios from "axios";
       }
     },
     methods: {
-      submitForm() {  
+      submitForm(event) {  
         if(this.formValues._id != null){
           console.log('from update')
           console.log(JSON.stringify(this.formValues))
@@ -63,6 +63,7 @@ import axios from "axios";
                   this.$router.push('/projects')
                   document.getElementById('addAlert').classList.add("show")
                   setTimeout(function() { document.getElementById('addAlert').classList.remove("show") }, 3000);
+                  event.target.reset();
                 }).catch(error => {
                     console.log(error)
                 });
