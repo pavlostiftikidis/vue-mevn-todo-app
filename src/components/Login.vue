@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <form @submit.prevent="login">
+    <form @submit.prevent="userLogin">
       <div class="form-group title">
         <h2>Sign in</h2>
       </div>
@@ -13,7 +13,7 @@
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
           required
-          v-model="email"
+          v-model="user.email"
           placeholder="Enter email"
         />
       </div>
@@ -24,7 +24,7 @@
           class="form-control"
           id="exampleInputPassword1"
           required
-          v-model="password"
+          v-model="user.password"
           placeholder="Password"
         />
       </div>
@@ -34,19 +34,43 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   name: "Login",
   data() {
     return {
-      email: "",
-      password: ""
+      user: {
+        email: "",
+        password: "",
+      },
+      userAuth: null,
     };
   },
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.userAuth = user;
+        this.$router.push({ name: "Projects" });
+      } else {
+        this.userAuth = null;
+        this.$router.push({ name: "login" });
+      }
+    });
+  },
   methods: {
-    login() {
-      console.log(this.email + this.password)
-    }
-  }
+    userLogin() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.user.email, this.user.password)
+        .then(() => {
+          this.$router.push("/projects");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    },
+  },
 };
 </script>
 

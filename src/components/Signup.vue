@@ -1,27 +1,16 @@
 <template>
   <div>
-    <form @submit.prevent="signup">
+    <form @submit.prevent="userRegistration">
       <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="inputEmail4">Firstname</label>
+        <div class="form-group col-md-12">
+          <label for="inputEmail4">Username</label>
           <input
             type="text"
             class="form-control"
             id="name"
             required
-            v-model="firstname"
-            placeholder="Firstname"
-          />
-        </div>
-        <div class="form-group col-md-6">
-          <label for="inputPassword4">Lastname</label>
-          <input
-            type="password"
-            class="form-control"
-            id="inputPassword4"
-            required
-            v-model="lastname"
-            placeholder="Lastname"
+            v-model="user.name"
+            placeholder="Username"
           />
         </div>
       </div>
@@ -33,7 +22,7 @@
             class="form-control"
             id="inputEmail4"
             required
-            v-model="email"
+            v-model="user.email"
             placeholder="Email"
           />
         </div>
@@ -46,10 +35,10 @@
             class="form-control"
             id="inputPassword4"
             required
-            v-model="password"
+            v-model="user.password"
             placeholder="Password"
           />
-        <div v-if="password.length > 1 && password.length < 6" class="text-danger">Password length length should be greater than 6</div>
+        <div v-if="user.password.length > 1 && user.password.length < 6" class="text-danger">Password length length should be greater than 6</div>
         </div>
         <div class="form-group col-md-6">
           <label for="inputPassword4">Re-Enter Password</label>
@@ -58,10 +47,10 @@
             class="form-control"
             id="inputPassword4"
             required
-            v-model="repassword"
+            v-model="user.repassword"
             placeholder="Password"
           />
-          <div v-if="password != repassword && repassword.length >1">Password don't matched</div>
+          <div v-if="user.password != user.repassword && user.repassword.length >1">Password don't matched</div>
         </div>
       </div>
       
@@ -71,21 +60,50 @@
 </template>
 
 <script>
+
+import firebase from "firebase";
+
 export default {
   name: "Signup",
   data() {
     return {
-      firstname: "",
-      lastname: "",
-      password: "",
-      repassword: "",
-      email: ""
+      user: {
+        name: "",
+        email: "",
+        password: "",
+        repassword: ""
+      },
     }
   },
   methods: {
-    signup() {
-      console.log(this.firstname)
+    userRegistration() {
+      firebase
+      .auth()
+      .createUserWithEmailAndPassword(this.user.email, this.user.password)
+      .then((res) => {
+        res.user
+          .updateProfile({
+            displayName: this.user.name
+          })
+          .then(() => {
+            this.$router.push('/login')
+          });
+      })
+      .catch((error) => {
+         alert(error.message);
+      });
     }
+  },
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.userAuth = user;
+        this.$router.push({ name: "Projects" });
+      } else {
+        this.userAuth = null;
+        this.$router.push({ name: "signup" });
+      }
+    });
   }
 };
 </script>
