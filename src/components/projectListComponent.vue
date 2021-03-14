@@ -16,6 +16,7 @@
           v-if="showProjectForm"
           :projects="this.projects"
           :editFormData="this.editFormData"
+          :user="this.user"
           @close="showProjectForm = false"
         />
       </div>
@@ -141,7 +142,7 @@ export default {
         title: null,
         description: null,
         task: [],
-        status: true, 
+        status: true,
       },
     };
   },
@@ -195,23 +196,21 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.user = user;
+        let apiURL = `http://localhost:4000/api/${this.user.uid}`;
+        axios
+          .get(apiURL)
+          .then((res) => {
+            this.projects = res.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } else {
         this.user = null;
         this.$router.push({ name: "login" });
       }
     });
-
-    let apiURL = "http://localhost:4000/api";
-    axios
-      .get(apiURL)
-      .then((res) => {
-        this.projects = res.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   },
-  
 };
 </script>
 

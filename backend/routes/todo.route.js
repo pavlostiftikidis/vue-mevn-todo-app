@@ -4,15 +4,25 @@ const todoRoute = express.Router();
 // Todo model
 let TodoModel = require('../models/Todo');
 
-todoRoute.route('/').get((req, res, next) => {
-    TodoModel.find((error, data) => {
-     if (error) {
-       return next(error)
-     } else {
-       res.json(data)
-     }
-   })
+// todoRoute.route('/').get((req, res, next) => {
+//     TodoModel.find((error, data) => {
+//      if (error) {
+//        return next(error)
+//      } else {
+//        res.json(data)
+//      }
+//    })
+//  })
+
+todoRoute.route('/:id').get((req, res, next) => {
+  TodoModel.find({user_id: req.params.id}, (error, data) => {
+   if (error) {
+     return next(error)
+   } else {
+     res.json(data)
+   }
  })
+})
 
  todoRoute.route('/create-task').post((req, res, next) => {
     TodoModel.create(req.body, (error, data) => {

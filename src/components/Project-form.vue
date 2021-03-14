@@ -16,14 +16,15 @@ import axios from "axios";
     components:{ Input },
     props: {
       projects: Object,
-      editFormData: Object
+      editFormData: Object,
+      user: Object
       },
     emits: ['close'],
     data() {
       return {
         showSuccessAlert: false,
         formValues: {
-            id: null,
+            user_id: null,
             title: null,
             description: null,
             task: [],
@@ -50,6 +51,9 @@ import axios from "axios";
         }else{
           console.log('from create')
           //this.formValues.status = false
+          this.formValues.user_id = this.user.uid
+          console.log(JSON.stringify(this.formValues))
+
           let apiURL = 'http://localhost:4000/api/create-task';
                 axios.post(apiURL, this.formValues).then((res) => {
                   
