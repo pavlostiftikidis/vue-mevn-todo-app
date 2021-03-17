@@ -35,11 +35,18 @@
             v-model.trim="formValues.title"
             placeholder="enter a new task"
           />
-          <p>{{ formValues.title }}</p>
         </div>
 
-        <div>
-          <button>Submit</button>
+        <div class="btn-wrapper">
+          <button
+            v-bind:class="{
+              activeBtn:
+                formValues.title == null || formValues.title.length == 0,
+            }"
+            class="btn btn-secondary"
+          >
+            Submit
+          </button>
         </div>
       </form>
 
@@ -304,15 +311,28 @@ form {
   padding: 0 90px;
 }
 
-.title {
-  width: 100%;
+form .title {
+  display: inline-block;
+  width: 80%;
+}
+
+form button {
+  border-radius: 35px;
+}
+
+form .btn-wrapper {
+  width: 20%;
 }
 
 form > div {
-  float: left;
+  display: inline-block;
 }
 
 ul {
   clear: both;
+}
+
+.activeBtn {
+  display: none;
 }
 </style>

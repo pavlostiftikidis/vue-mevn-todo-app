@@ -15,6 +15,7 @@
     "core-js": "^3.6.5",
     "firebase": "^8.2.10",
     "http-errors": "^1.8.0",
+    "multer": "^1.4.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0"

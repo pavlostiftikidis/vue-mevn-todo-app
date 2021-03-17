@@ -1,20 +1,18 @@
 <template>
-    <projectListComponent />
+  <projectListComponent />
 </template>
 
 <script>
 // @ is an alias to /src
-import projectListComponent from '@/components/projectListComponent.vue'
-
+import projectListComponent from "@/components/projectListComponent.vue";
 
 export default {
-  name: 'Projects',
+  name: "Projects",
   components: {
-    projectListComponent
-  }
-}
+    projectListComponent,
+  },
+};
 </script>
 
 <style>
-
 </style>

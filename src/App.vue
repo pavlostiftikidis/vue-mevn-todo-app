@@ -44,7 +44,7 @@ export default {
       user: null,
     };
   },
-  created() {
+  beforeCreate() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.user = user;
